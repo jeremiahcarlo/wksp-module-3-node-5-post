@@ -1,0 +1,17 @@
+<div>
+  <li class='todo-item'>
+    <h1><%= item.task %> </h1>
+    <form action="/item/delete" method="POST">
+      <button type="button" onclick="done()" class='btn-primary btn-todo' class="item-done">Done</button>
+      <button type="submit" class='btn-danger btn-todo' value="<%= item._id %>" name="id">X</button>
+    </form>
+  </li>
+</div>
+
+<script>
+  function done() {
+    document.addEventListener('click', e => {
+      e.target.parentElement.parentElement.firstChild.nextSibling.classList.add('done');
+    })
+  }
+</script>

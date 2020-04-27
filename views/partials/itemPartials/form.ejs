@@ -1,0 +1,11 @@
+<div class='container'>
+  <form action="/data" method="POST" class='js-form form'>
+    <input type='text' autoFocus aria-label='Enter a new todo item' placeholder='Enter a new todo item' name="item"
+      class='js-todo-input' required />
+    <input type="submit" value="Add">
+  </form>
+  <h1 class='app-title'>todos</h1>
+  <% items.forEach(item => { %>
+  <%- include('./item', {item}) %>
+  <% }) %>
+</div> 

@@ -3,23 +3,37 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const app = express();
 
 const PORT = process.env.PORT || 8000;
 
+const Todos = require('./routes/todos');
+const Orders = require('./routes/order');
 
-express()
-    .use(function(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        next();
-    })
-	.use(morgan('tiny'))
-	.use(express.static('public'))
-    .use(bodyParser.json())
-    .use(express.urlencoded({extended: false}))
-    .set('view engine', 'ejs')
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
+});
 
-    // endpoints
+app.use(morgan('tiny'));
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
 
-    .get('*', (req, res) => res.send('Dang. 404.'))
-    .listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.use('/', Todos);
+app.use('/', Orders);
+
+// 404 Error Route
+app.get('*', (req, res) => {
+    res.status(404);
+    res.render('pages/errorPage', {
+    title: '404 PAGE NOT FOUND!'
+    });
+});
+
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
